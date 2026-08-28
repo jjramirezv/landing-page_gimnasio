@@ -33,10 +33,10 @@ export default function LoginPage() {
         <form action={formAction} className="mt-6 space-y-4">
           <div>
             <label className="mb-1 block text-xs font-semibold uppercase tracking-wide text-white/60">
-              Correo
+              Usuario o correo
             </label>
             <input
-              type="email"
+              type="text"
               name="email"
               required
               className="w-full rounded-lg border border-white/15 bg-negro-profundo px-4 py-2.5 text-sm outline-none focus:border-fuego"

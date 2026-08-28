@@ -5,8 +5,8 @@ import { services, plans, trainers, galleryImages } from "../lib/data";
 const prisma = new PrismaClient();
 
 async function main() {
-  const adminEmail = "luisdamiandam@gmail.com";
-  const adminPassword = "Admin1234!";
+  const adminEmail = "demo-gimnasio";
+  const adminPassword = "demo-gimnasio";
 
   const existingAdmin = await prisma.user.findUnique({ where: { email: adminEmail } });
   if (!existingAdmin) {
