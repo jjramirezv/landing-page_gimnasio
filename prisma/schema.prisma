@@ -1,0 +1,123 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  ADMIN
+  RECEPCION
+  ENTRENADOR
+  USUARIO
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(USUARIO)
+  createdAt    DateTime @default(now())
+
+  auditLogs AuditLog[]
+}
+
+model Plan {
+  id          String   @id @default(cuid())
+  name        String
+  icon        String
+  priceMonthly Int
+  featured    Boolean  @default(false)
+  benefits    Json
+  published   Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  icon        String
+  name        String
+  description String
+  schedule    String
+  image       String?
+  published   Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Trainer {
+  id            String   @id @default(cuid())
+  name          String
+  specialty     String
+  certification String
+  initials      String
+  photo         String?
+  published     Boolean  @default(true)
+  order         Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model GalleryItem {
+  id        String   @id @default(cuid())
+  label     String
+  src       String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Lead {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  message   String
+  status    String   @default("nuevo")
+  createdAt DateTime @default(now())
+}
+
+model InventoryItem {
+  id          String   @id @default(cuid())
+  product     String
+  stock       Int
+  minStock    Int
+  status      String   @default("ok")
+  updatedAt   DateTime @updatedAt
+  createdAt   DateTime @default(now())
+}
+
+model EmailTemplate {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  name      String
+  subject   String
+  body      String
+  updatedAt DateTime @updatedAt
+}
+
+model EmailLog {
+  id        String   @id @default(cuid())
+  to        String
+  subject   String
+  status    String
+  error     String?
+  createdAt DateTime @default(now())
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  entity    String
+  action    String
+  detail    String?
+  createdAt DateTime @default(now())
+}
